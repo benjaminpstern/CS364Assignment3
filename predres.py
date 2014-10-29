@@ -5,24 +5,21 @@ from predunify import *
 
 # One or more of these functions may need modification from the propositional calculus version, propres.py 
 
+# Resolution theorem prover
+
 def resolvePair(c1, c2):
-    for lit1 in c1:
-        for lit2 in c2:
-            u = lUnify(lit1, opposite(lit2))
-            if u != "fail":
-                if type(c1) == str and type(c2) == str:
-                    c1c = c1.copy().remove(lit1)
-                    c2c = c2.copy().remove(lit2)
-                else:
-                    l1 = list(c1)
-                    l1.remove(lit1)
-                    l2 = list(c2)
-                    l2.remove(lit2)
-                    c1c = tuple(l1)
-                    c2c = tuple(l2)
-                c1c = applySubst(c1c, u)
-                c2c = applySubst(c2c, u)
-                yield merge(c1c,c2c)
+    for pred1 in c1:
+        for pred2 in c2:
+            sub = tUnify(pred1, opposite(pred2))
+            if sub != "fail":
+                c1sub = applySubst(c1, sub)
+                c2sub = applySubst(c2, sub)
+                print(c1sub, c2sub,c1,c2)
+                def delete(tup, pred):
+                    return tuple(list(tup).remove(pred))
+                c1sub = delete(c1sub, pred1)
+                c2sub = delete(c2sub, pred2)
+                yield merge(c1sub,c2sub)
 
 def resolveSet(c, done):
     for c1 in c:
@@ -42,17 +39,17 @@ def resolveAll(c, done=[]):
     for (r0, done1) in resolveSet(c, done):
         flag = True
         for x in resolveAll(r0, done1):
-            yield [c]+x
+            yield x
     if not flag:
         yield [c]
-
+        
 def merge(c1, c2):
-    ans = list(c1)
+    ans = c1.copy()
     for x in c2:
         if x in c1:
             continue
         ans.append(x)
-    return tuple(ans)
+    return ans
 
 # Prettyprinters
 # prints answers nicely
