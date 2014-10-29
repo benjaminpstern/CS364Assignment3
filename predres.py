@@ -12,13 +12,10 @@ def resolvePair(c1, c2):
         for pred2 in c2:
             sub = tUnify(pred1, opposite(pred2))
             if sub != "fail":
-                c1sub = applySubst(c1, sub)
-                c2sub = applySubst(c2, sub)
-                print(c1sub, c2sub,c1,c2)
-                def delete(tup, pred):
-                    return tuple(list(tup).remove(pred))
-                c1sub = delete(c1sub, pred1)
-                c2sub = delete(c2sub, pred2)
+                c1sub = applySubst(c1.copy(), sub)
+                c2sub = applySubst(c2.copy(), sub)
+                c1sub.remove(pred1)
+                c2sub.remove(pred2)
                 yield merge(c1sub,c2sub)
 
 def resolveSet(c, done):
