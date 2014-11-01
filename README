@@ -1,0 +1,11 @@
+CS 364 Artificial Intelligence
+Assignment 3
+Cole Peppis and Ben Stern
+
+Our solution for problem 7 is contained in buildings.pl. It asks
+questions about the building the user is currently in on campus and
+tries to guess that building. We used the animal.pl as inspiration.
+
+We have adhered to the Honor Code in this assingment. 
+Cole Peppis
+Ben Stern

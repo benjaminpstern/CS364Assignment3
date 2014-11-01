@@ -3,19 +3,19 @@
 
 from predunify import *
 
-# One or more of these functions may need modification from the propositional calculus version, propres.py 
-
 # Resolution theorem prover
 
 def resolvePair(c1, c2):
     for pred1 in c1:
         for pred2 in c2:
-            sub = tUnify(pred1, opposite(pred2))
+            sub = aUnify(pred1, opposite(pred2))
             if sub != "fail":
-                c1sub = applySubst(c1.copy(), sub)
-                c2sub = applySubst(c2.copy(), sub)
-                c1sub.remove(pred1)
-                c2sub.remove(pred2)
+                c1r = c1.copy()
+                c1r.remove(pred1)
+                c2r = c2.copy()
+                c2r.remove(pred2)
+                c1sub = applyS(c1r, sub)
+                c2sub = applyS(c2r, sub)
                 yield merge(c1sub,c2sub)
 
 def resolveSet(c, done):
@@ -96,3 +96,17 @@ Try:
 >>> show(l)
 
 """
+
+# we couldn't get predunify's applySubst() to work, so we wrote this:
+def applyS(preds, sub):
+    retval = []
+    for pred in preds:
+        l = []
+        for e in pred:
+            if e in sub.keys():
+                l.append(sub[e])
+            else:
+                l.append(e)
+        retval.append(tuple(l))
+    return retval
+
